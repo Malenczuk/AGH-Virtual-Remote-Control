@@ -15,13 +15,11 @@ class Item:
     def toggle_state(self):
         UDPSock = socket(AF_INET, SOCK_DGRAM)
         UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-        if self.state:
-            MESSAGE = "off " + self.id
-        else:
-            MESSAGE = "on " + self.id
-        self.state = not self.state
+        MESSAGE = ("off " if self.state else "on ") + self.id
         UDPSock.sendto(MESSAGE.encode('utf8'), (Item.UDP_IP, Item.UDP_PORT))
         UDPSock.close()
+        self.state = not self.state
+
 
 class RemoteController:
 
@@ -33,8 +31,9 @@ class RemoteController:
             except yaml.YAMLError as exc:
                 print(exc)
 
-        self.rooms = [(room[0][0], list(map(lambda x: Item(x[0], x[1]), room[1:]))) for room in
-                 map(lambda x: list(x.items()), data)]
+        self.rooms = [(room[0][0], [Item(id, description) for id, description in room[1:]]) for room in
+                      map(lambda x: list(x.items()), data)]
 
 
 rc = RemoteController("configuration.yml")
+rc.rooms[0][1][0].toggle_state()

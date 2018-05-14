@@ -3,10 +3,12 @@ from socket import *
 
 
 def main():
+    UDP_IP = "255.255.255.255"
+    UDP_PORT = 2018
     # Create socket and bind to address
     UDPSock = socket(AF_INET, SOCK_DGRAM)
     UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-    UDPSock.bind(("255.255.255.255", 2018))
+    UDPSock.bind((UDP_IP, UDP_PORT))
     # Receive messages
     while True:
         data, addr = UDPSock.recvfrom(2018)
