@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
-from remotecontroller.gui.mainWindow import *
+import os
+from PyQt5.QtWidgets import QApplication
+from remotecontroller.gui.mainWindow import MainWindow
 from remotecontroller.item import Item
 from remotecontroller.qdarkstyle import load_stylesheet_pyqt5
 import yaml
