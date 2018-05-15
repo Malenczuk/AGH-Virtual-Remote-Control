@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import yaml
-from remotecontroller.gui.MainWindow import *
-from remotecontroller.Item import Item
+from remotecontroller.gui.mainWindow import *
+from remotecontroller.item import Item
 
 
 class RemoteController:
@@ -25,8 +25,7 @@ class RemoteController:
 
 
 def main():
-    rc = RemoteController("resources/configuration.yml")
-    rc.gui()
+    RemoteController("resources/configuration.yml").gui()
 
 
 if __name__ == "__main__":
