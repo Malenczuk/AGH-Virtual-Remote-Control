@@ -13,7 +13,7 @@ class RoomsWidget(QWidget):
     def __controls(self):
         self.roomsLable = QLabel("Room")
         self.roomsComboBox = QComboBox(self)
-        self.roomsComboBox.addItems([""]+[room[0] for room in self.__mainWindow.rooms])
+        self.roomsComboBox.addItems([""]+[room.name for room in self.__mainWindow.rooms])
         self.roomsComboBox.currentTextChanged.connect(self.__combobox_update)
         self.roomsComboBox.currentTextChanged.connect(self.__form_update)
         self.mainMenuButton = QPushButton("Main Manu")
@@ -23,7 +23,7 @@ class RoomsWidget(QWidget):
         self.__mainWindow.set_main_widget()
 
     def __combobox_update(self, value):
-        self.shownRoom = [room for room in self.__mainWindow.rooms if room[0] == value]
+        self.shownRoom = [room for room in self.__mainWindow.rooms if room.name == value]
 
     def __form_update(self):
         for i in reversed(range(self.formLayout.count())):
@@ -31,11 +31,13 @@ class RoomsWidget(QWidget):
             self.formLayout.removeWidget(widgetToRemove)
             widgetToRemove.setParent(None)
         for room in self.shownRoom:
-            for item in room[1]:
+            for item in room.items:
                 button = QPushButton(item.description)
                 button.clicked.connect(item.toggle_state)
                 button.clicked.connect(self.__form_update)
                 label = QLabel("on" if item.state else "off")
+                label.setStyleSheet("color: rgb(0, 255, 0);" if item.state else "color: rgb(255, 0, 0);")
+                label.setFixedWidth(25)
                 self.formLayout.addRow(label, button)
 
     def __layout(self):

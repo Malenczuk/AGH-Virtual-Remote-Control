@@ -1,4 +1,6 @@
 from socket import *
+import locale
+
 
 class Item:
     UDP_IP = "255.255.255.255"
@@ -8,6 +10,9 @@ class Item:
         self.id = id
         self.description = description
         self.state = state
+
+    def __lt__(self, other):
+        return locale.strxfrm(self.description) < locale.strxfrm(other.description)
 
     def toggle_state(self):
         UDPSock = socket(AF_INET, SOCK_DGRAM)

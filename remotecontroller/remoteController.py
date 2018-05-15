@@ -4,6 +4,7 @@ import os
 from PyQt5.QtWidgets import QApplication
 from remotecontroller.gui.mainWindow import MainWindow
 from remotecontroller.item import Item
+from remotecontroller.room import Room
 from remotecontroller.qdarkstyle import load_stylesheet_pyqt5
 import yaml
 
@@ -18,8 +19,8 @@ class RemoteController:
             except yaml.YAMLError as exc:
                 print(exc)
 
-        self.rooms = [(room[0][0], [Item(id, description) for id, description in room[1:]]) for room in
-                      map(lambda x: list(x.items()), data)]
+        self.rooms = sorted([Room(room[0][0], sorted([Item(id, description) for id, description in room[1:]]))
+                             for room in map(lambda x: list(x.items()), data)])
 
     def gui(self):
         app = QApplication(sys.argv)

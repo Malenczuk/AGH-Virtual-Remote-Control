@@ -24,11 +24,11 @@ class MainWidget(QWidget):
     def __layout(self):
         self.setMinimumSize(400, 400)
         self.vbox = QVBoxLayout()
-        self.hbox = QHBoxLayout()
+        # self.hbox = QHBoxLayout()
+        self.formLayout = QFormLayout()
+        self.formLayout.addWidget(self.searchButton)
+        self.formLayout.addWidget(self.roomsButton)
 
-        self.hbox.addWidget(self.searchButton)
-        self.hbox.addWidget(self.roomsButton)
+        # self.vbox.addLayout(self.hbox)
 
-        self.vbox.addLayout(self.hbox)
-
-        self.setLayout(self.vbox)
+        self.setLayout(self.formLayout)

@@ -31,6 +31,7 @@ class MainWindow(QMainWindow):
 
     def set_main_widget(self):
         self.main_widget = MainWidget(self)
+        self.main_widget.show()
         _widget = QWidget()
         _layout = QVBoxLayout(_widget)
         _layout.addWidget(self.main_widget)

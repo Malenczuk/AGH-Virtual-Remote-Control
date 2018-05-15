@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 import re
+from remotecontroller.room import Room
 
 
 class SearchWidget(QWidget):
@@ -26,9 +27,9 @@ class SearchWidget(QWidget):
         query = self.searchQuery.text()
         self.itemsInRoom = []
         for room in self.__mainWindow.rooms:
-            items = [item for item in room[1] if re.search(query, item.description, re.IGNORECASE)]
+            items = [item for item in room.items if re.search(query, item.description, re.IGNORECASE)]
             if items:
-                self.itemsInRoom.append((room[0], items))
+                self.itemsInRoom.append(Room(room.name, items))
 
     def __form_update(self):
         for i in reversed(range(self.formLayout.count())):
@@ -36,14 +37,16 @@ class SearchWidget(QWidget):
             self.formLayout.removeWidget(widgetToRemove)
             widgetToRemove.setParent(None)
         for room in self.itemsInRoom:
-            roomLabel = QLabel(room[0], self)
+            roomLabel = QLabel(room.name, self)
             self.formLayout.addWidget(roomLabel)
-            for item in room[1]:
+            for item in room.items:
                 button = QPushButton(item.description)
                 button.clicked.connect(item.toggle_state)
                 button.clicked.connect(self.__form_update)
-                lable = QLabel("on" if item.state else "off")
-                self.formLayout.addRow(lable, button)
+                label = QLabel(" on  " if item.state else " off ")
+                label.setStyleSheet("color: rgb(0, 255, 0);" if item.state else "color: rgb(255, 0, 0);")
+                label.setFixedWidth(25)
+                self.formLayout.addRow(label, button)
 
     def __layout(self):
         self.setMinimumSize(400, 400)
