@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import yaml
-from src.gui.MainWindow import *
-from src.Item import Item
+from remotecontroller.gui.MainWindow import *
+from remotecontroller.Item import Item
 
 
 class RemoteController:
