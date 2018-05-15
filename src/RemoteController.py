@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import yaml
-from src.gui.RcWindow import *
+from src.gui.MainWindow import *
 from src.Item import Item
 
 
