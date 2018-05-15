@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import sys
 from socket import *
+from PyQt5 import QtGui, QtCore, QtWidgets
 import yaml
+from src.gui.RcWindow import *
 
 
 class Item:
@@ -35,5 +38,20 @@ class RemoteController:
                       map(lambda x: list(x.items()), data)]
 
 
-rc = RemoteController("configuration.yml")
-rc.rooms[0][1][0].toggle_state()
+
+def main():
+    rc = RemoteController("resources/configuration.yml")
+    app = QApplication(sys.argv)
+    win = MainWindow(rc.rooms)
+    app.exec_()
+    # datetime = QtCore.QDateTime.currentDateTime()
+    # print(datetime.toString())
+    #
+    # app = QtWidgets.QApplication(sys.argv)
+    #
+    # w = RcWindow(rc.rooms)
+    #
+    # sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    main()
