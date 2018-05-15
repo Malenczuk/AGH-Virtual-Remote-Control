@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import sys
-import yaml
 from remotecontroller.gui.mainWindow import *
 from remotecontroller.item import Item
-import remotecontroller.qdarkstyle
+from remotecontroller.qdarkstyle import load_stylesheet_pyqt5
+import yaml
 
 
 class RemoteController:
@@ -21,7 +21,7 @@ class RemoteController:
 
     def gui(self):
         app = QApplication(sys.argv)
-        dark_stylesheet = remotecontroller.qdarkstyle.load_stylesheet_pyqt5()
+        dark_stylesheet = load_stylesheet_pyqt5()
         app.setStyleSheet(dark_stylesheet)
         win = MainWindow(self.rooms)
 
@@ -29,7 +29,7 @@ class RemoteController:
 
 
 def main():
-    RemoteController("resources/configuration.yml").gui()
+    RemoteController(os.path.dirname(__file__) + "/resources/configuration.yml").gui()
 
 
 if __name__ == "__main__":
