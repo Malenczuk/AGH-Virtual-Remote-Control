@@ -1,8 +1,6 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import os
-from time import strftime
 import re
 
 
@@ -14,7 +12,7 @@ class MainWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.resize(300, 300)
+        self.resize(400, 400)
         self.setWindowTitle('Virtual Remote Controller')
         self.setWindowIcon(QIcon(os.path.dirname(__file__) + '/resources/rc-icon.png'))
         self.center()
@@ -88,6 +86,7 @@ class RoomsWidget(QWidget):
                 self.formLayout.addRow(label, button)
 
     def __layout(self):
+        self.setMinimumSize(400,400)
         self.vbox = QVBoxLayout()
         self.h1box = QHBoxLayout()
         self.h2box = QHBoxLayout()
@@ -154,6 +153,7 @@ class SearchWidget(QWidget):
                 self.formLayout.addRow(lable, button)
 
     def __layout(self):
+        self.setMinimumSize(400, 400)
         self.vbox = QVBoxLayout()
         self.h1box = QHBoxLayout()
         self.h2box = QHBoxLayout()
@@ -197,6 +197,7 @@ class MainWidget(QWidget):
         self.__mainWindow.set_rooms_widget()
 
     def __layout(self):
+        self.setMinimumSize(400, 400)
         self.vbox = QVBoxLayout()
         self.hbox = QHBoxLayout()
 
@@ -206,77 +207,3 @@ class MainWidget(QWidget):
         self.vbox.addLayout(self.hbox)
 
         self.setLayout(self.vbox)
-
-
-class RcWindow(QMainWindow):
-    def __init__(self, rooms):
-        super().__init__()
-        self.rooms = rooms
-        self.shownRooms = []
-        self.initUI()
-
-    def initUI(self):
-        self.b_1 = QPushButton("Rooms")
-        self.b_1.resize(100, 200)
-        self.b_2 = QPushButton("Search")
-        self.b_2.resize(100, 200)
-        self.b_2.move(200, 0)
-        self.mainwidget = QWidget(self)
-        self.layout = QVBoxLayout(self.mainwidget)
-        self.layout.addWidget(self.b_1)
-        self.layout.addWidget(self.b_2)
-        # self.scrollArea = QScrollArea(self.centralwidget)
-        # self.scrollArea.setWidgetResizable(True)
-        # self.scrollAreaWidgetContents = QWidget(self.scrollArea)
-        # self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        # self.verticalLayout.addWidget(self.scrollArea)
-        # self.setCentralWidget(self.centralwidget)
-        # self.formLayout = QFormLayout(self.scrollAreaWidgetContents)
-        #
-        # self.cb_1 = QComboBox(self)
-        # self.cb_1.addItems([room[0] for room in self.rooms])
-        # self.cb_1.currentTextChanged.connect(self.on_combobox_changed)
-        # self.cb_1.currentTextChanged.connect(self.update_after)
-        # self.formLayout.addWidget(self.cb_1)
-
-        self.resize(300, 300)
-        self.setWindowTitle('Virtual Remote Controller')
-        self.setWindowIcon(QIcon(os.path.dirname(__file__) + '/resources/rc-icon.png'))
-        self.center()
-        self.show()
-
-    def closeEvent(self, event):
-
-        reply = QMessageBox.question(self, 'Message',
-                                     "Are you sure you want to quit?", QMessageBox.Yes |
-                                     QMessageBox.No, QMessageBox.No)
-
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
-
-    def center(self):
-
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
-    def on_combobox_changed(self, value):
-        self.shownRooms = [room for room in self.rooms if room[0] == value]
-        print("elo")
-
-    def update_after(self):
-        for i in reversed(range(self.formLayout.count())):
-            widgetToRemove = self.formLayout.itemAt(i).widget()
-            self.formLayout.removeWidget(widgetToRemove)
-            widgetToRemove.setParent(None)
-
-        self.formLayout.addWidget(self.cb_1)
-        for room in self.shownRooms:
-            for item in room[1]:
-                button = QPushButton(item.description + "\t State: " + ("on" if item.state else "off"))
-                button.clicked.connect(item.toggle_state)
-                button.clicked.connect(self.update_after)
-                self.formLayout.addWidget(button)
