@@ -3,6 +3,7 @@ import sys
 import yaml
 from remotecontroller.gui.mainWindow import *
 from remotecontroller.item import Item
+import remotecontroller.qdarkstyle
 
 
 class RemoteController:
@@ -20,7 +21,10 @@ class RemoteController:
 
     def gui(self):
         app = QApplication(sys.argv)
+        dark_stylesheet = remotecontroller.qdarkstyle.load_stylesheet_pyqt5()
+        app.setStyleSheet(dark_stylesheet)
         win = MainWindow(self.rooms)
+
         app.exec_()
 
 

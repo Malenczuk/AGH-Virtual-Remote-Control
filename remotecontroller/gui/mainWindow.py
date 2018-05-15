@@ -1,6 +1,9 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import os
+from PyQt5.QtCore import QUrl
+from PyQt5.QtQuick import QQuickView
+from PyQt5.QtQuick import *
 
 from remotecontroller.gui.mainWidget import MainWidget
 from remotecontroller.gui.roomsWidget import RoomsWidget
@@ -21,7 +24,6 @@ class MainWindow(QMainWindow):
         self.center()
 
         self.set_main_widget()
-
         self.show()
 
     def center(self):
