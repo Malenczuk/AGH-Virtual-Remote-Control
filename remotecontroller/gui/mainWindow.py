@@ -1,13 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import os
-from PyQt5.QtCore import QUrl
-from PyQt5.QtQuick import QQuickView
-from PyQt5.QtQuick import *
 
-from gui.mainWidget import MainWidget
-from gui.roomsWidget import RoomsWidget
-from gui.searchWidget import SearchWidget
+from remotecontroller.gui.mainWidget import MainWidget
+from remotecontroller.gui.roomsWidget import RoomsWidget
+from remotecontroller.gui.searchWidget import SearchWidget
 
 
 class MainWindow(QMainWindow):
