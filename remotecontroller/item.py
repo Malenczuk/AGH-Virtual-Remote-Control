@@ -15,9 +15,9 @@ class Item:
         return locale.strxfrm(self.description) < locale.strxfrm(other.description)
 
     def toggle_state(self):
+        self.state = not self.state
         UDPSock = socket(AF_INET, SOCK_DGRAM)
         UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-        MESSAGE = ("off " if self.state else "on ") + self.id
+        MESSAGE = ("on " if self.state else "off ") + self.id
         UDPSock.sendto(MESSAGE.encode('utf8'), (Item.UDP_IP, Item.UDP_PORT))
         UDPSock.close()
-        self.state = not self.state

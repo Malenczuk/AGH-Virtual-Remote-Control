@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
+from remotecontroller.gui.mainWindow import MainWindow
+from remotecontroller.qdarkstyle import load_stylesheet_pyqt5
+from remotecontroller.room import Room
+from remotecontroller.item import Item
+from PyQt5.QtWidgets import QApplication
+import yaml
 import sys
 import os
-from PyQt5.QtWidgets import QApplication
-from remotecontroller.gui.mainWindow import MainWindow
-from remotecontroller.item import Item
-from remotecontroller.room import Room
-from remotecontroller.qdarkstyle import load_stylesheet_pyqt5
-import yaml
 
 
 class RemoteController:

@@ -1,10 +1,7 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-import os
-
 from remotecontroller.gui.mainWidget import MainWidget
-from remotecontroller.gui.roomsWidget import RoomsWidget
-from remotecontroller.gui.searchWidget import SearchWidget
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
+import os
 
 
 class MainWindow(QMainWindow):
@@ -15,11 +12,10 @@ class MainWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.resize(400, 400)
+        self.resize(500, 600)
         self.setWindowTitle('Virtual Remote Controller')
         self.setWindowIcon(QIcon(os.path.dirname(__file__) + '/resources/rc-icon.png'))
         self.center()
-
         self.set_main_widget()
         self.show()
 
@@ -31,22 +27,8 @@ class MainWindow(QMainWindow):
 
     def set_main_widget(self):
         self.main_widget = MainWidget(self)
-        self.main_widget.show()
         _widget = QWidget()
         _layout = QVBoxLayout(_widget)
         _layout.addWidget(self.main_widget)
         self.setCentralWidget(_widget)
 
-    def set_search_widget(self):
-        self.search_widget = SearchWidget(self)
-        _widget = QWidget()
-        _layout = QVBoxLayout(_widget)
-        _layout.addWidget(self.search_widget)
-        self.setCentralWidget(_widget)
-
-    def set_rooms_widget(self):
-        self.rooms_widget = RoomsWidget(self)
-        _widget = QWidget()
-        _layout = QVBoxLayout(_widget)
-        _layout.addWidget(self.rooms_widget)
-        self.setCentralWidget(_widget)

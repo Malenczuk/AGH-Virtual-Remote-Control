@@ -1,3 +1,6 @@
+import locale
+
+
 class Room:
 
     def __init__(self, name, items):
@@ -5,4 +8,4 @@ class Room:
         self.items = items
 
     def __lt__(self, other):
-        return self.name < other.name
+        return locale.strxfrm(self.name) < locale.strxfrm(other.name)
