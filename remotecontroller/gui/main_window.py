@@ -1,4 +1,4 @@
-from remotecontroller.gui.mainWidget import MainWidget
+from remotecontroller.gui.main_widget import MainWidget
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 import os
@@ -6,9 +6,9 @@ import os
 
 class MainWindow(QMainWindow):
 
-    def __init__(self, rooms, parent=None):
+    def __init__(self, rc, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.rooms = rooms
+        self.rc = rc
         self.initUI()
 
     def initUI(self):

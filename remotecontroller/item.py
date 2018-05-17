@@ -1,23 +1,15 @@
-from socket import *
 import locale
 
 
 class Item:
-    UDP_IP = "255.255.255.255"
-    UDP_PORT = 2018
-
-    def __init__(self, id, description, state=False):
+    def __init__(self, id, description, state=False, parent=None):
         self.id = id
         self.description = description
         self.state = state
+        self.parent = parent
 
     def __lt__(self, other):
         return locale.strxfrm(self.description) < locale.strxfrm(other.description)
 
     def toggle_state(self):
         self.state = not self.state
-        UDPSock = socket(AF_INET, SOCK_DGRAM)
-        UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-        MESSAGE = ("on " if self.state else "off ") + self.id
-        UDPSock.sendto(MESSAGE.encode('utf8'), (Item.UDP_IP, Item.UDP_PORT))
-        UDPSock.close()
