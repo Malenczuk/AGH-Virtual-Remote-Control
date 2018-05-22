@@ -17,6 +17,7 @@ class Receiver:
             if not data:
                 break
             print(data.decode('utf8'), addr)
+            self.UDPSock.sendto(data, addr)
 
         # Close socket
         self.UDPSock.close()

@@ -1,34 +1,32 @@
 from remotecontroller.room import Room
-from remotecontroller.gui.item_widget import ItemWidget
+from remotecontroller.gui.room_widget import RoomWidget
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import re
 
 
-
 class MainWidget(QWidget):
 
-    def __init__(self, parent):
-        super(MainWidget, self).__init__()
-        self.parent = parent
-        self.shownRoom = self.parent.rc.rooms
-        self.itemsInRooms = self.parent.rc.rooms
+    def __init__(self, parent=None):
+        super(self.__class__, self).__init__(parent)
+        self.shownRoom = self.parent().rc.rooms
+        self.itemsInRooms = [(room.name, room.items) for room in self.parent().rc.rooms]
         self.__controls()
         self.__layout()
-        self.form_update()
+        self.update_vscroll()
 
     def __controls(self):
         self.roomsLabel = QLabel("Room")
         self.roomsLabel.setFixedWidth(35)
         self.roomsComboBox = QComboBox(self)
-        self.roomsComboBox.addItems(["ALL"] + [room.name for room in self.parent.rc.rooms])
+        self.roomsComboBox.addItems(["ALL"] + [room.name for room in self.parent().rc.rooms])
         self.roomsComboBox.currentTextChanged.connect(self.__combobox_update)
         self.searchLabel = QLabel("Search Items", self)
         self.searchQuery = QLineEdit(self)
         self.searchQuery.textEdited.connect(self.__search_query_edited)
 
     def __combobox_update(self, value):
-        self.shownRoom = [room for room in self.parent.rc.rooms if room.name == value or value == "ALL"]
+        self.shownRoom = [room for room in self.parent().rc.rooms if room.name == value or value == "ALL"]
         self.__search_query_edited()
 
     def __search_query_edited(self):
@@ -37,25 +35,20 @@ class MainWidget(QWidget):
         for room in self.shownRoom:
             items = [item for item in room.items if re.search(query, item.description, re.IGNORECASE)]
             if items:
-                self.itemsInRooms.append(Room(room.name, items))
-        self.form_update()
+                self.itemsInRooms.append((room.name, items))
+        self.update_vscroll()
 
-    def form_update(self):
-        for i in reversed(range(self.VScrollLayout.count())):
-            widget = self.VScrollLayout.itemAt(i).widget()
-            show = False
-            for room in self.itemsInRooms:
-                if isinstance(widget, QLabel):
-                    if widget.text() == room.name:
-                        show = True
-                if isinstance(widget, ItemWidget):
-                    for item in room.items:
-                        if widget.item == item:
-                            show = True
-            if show:
-                widget.show()
+    def update_vscroll(self):
+        for room in self.parent().rc.rooms:
+            if room in self.shownRoom:
+                room.widget.show()
+                for item in room.items:
+                    if item in [i for name, items in self.itemsInRooms if name == room.name for i in items]:
+                        item.widget.show()
+                    else:
+                        item.widget.hide()
             else:
-                widget.hide()
+                room.widget.hide()
 
     def __layout(self):
         self.setMinimumSize(400, 400)
@@ -89,9 +82,7 @@ class MainWidget(QWidget):
         self.VScrollLayout.setAlignment(Qt.AlignTop)
 
     def __init_item_widgets(self):
-        for room in self.itemsInRooms:
-            room_label = QLabel(room.name, self)
-            self.VScrollLayout.addWidget(room_label)
-            for item in room.items:
-                item_widget = ItemWidget(item, self.parent.rc.transmitter, self)
-                self.VScrollLayout.addWidget(item_widget)
+        for room in self.parent().rc.rooms:
+            room.widget = RoomWidget(room, self.parent().rc.transmitter)
+            self.VScrollLayout.addWidget(room.widget)
+

@@ -7,7 +7,7 @@ import os
 class MainWindow(QMainWindow):
 
     def __init__(self, rc, parent=None):
-        super(MainWindow, self).__init__(parent)
+        super(self.__class__, self).__init__(parent)
         self.rc = rc
         self.initUI()
 
@@ -26,9 +26,6 @@ class MainWindow(QMainWindow):
         self.move(qr.topLeft())
 
     def set_main_widget(self):
-        self.main_widget = MainWidget(self)
-        _widget = QWidget()
-        _layout = QVBoxLayout(_widget)
-        _layout.addWidget(self.main_widget)
-        self.setCentralWidget(_widget)
+        self.mainWidget = MainWidget(self)
+        self.setCentralWidget(self.mainWidget)
 
