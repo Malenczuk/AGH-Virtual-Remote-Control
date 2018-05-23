@@ -17,6 +17,7 @@ class Receiver:
             if not data:
                 break
             print(data.decode('utf8'), addr)
+            # sending message that the state of an item was changed
             self.UDPSock.sendto(data, addr)
 
         # Close socket

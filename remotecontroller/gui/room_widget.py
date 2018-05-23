@@ -18,6 +18,7 @@ class RoomWidget(QWidget):
         self.vLayout.addWidget(self.label)
 
     def __init_items(self):
+        # initializing
         for item in self.room.items:
             item.widget = ItemWidget(item, self.transmitter, self)
             self.vLayout.addWidget(item.widget)

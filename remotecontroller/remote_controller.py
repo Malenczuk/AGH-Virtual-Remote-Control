@@ -1,5 +1,6 @@
 import sys
-sys.path.append("../AGH-Virtual-Remote-Control/")
+
+sys.path.append("../Malenczuk_Marcin")
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import *
 import remotecontroller.gui.qdarkstyle as qdarksyle
@@ -20,28 +21,35 @@ class RemoteController:
         self.UDPSock = socket(AF_INET, SOCK_DGRAM)
         self.UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self.app = QApplication(sys.argv)
+        # changing style of the application
         self.app.setStyleSheet(qdarksyle.load_stylesheet_pyqt5())
+        # creating main window of the application
         self.win = MainWindow(self)
+        # creating second thread of continuous receiving messages from server
         self.receiver = self.Receiver(self.UDPSock)
+        # signaling main thread of received message
         self.receiver.update.connect(self.toggle)
+        # starting receiving thread
         self.receiver.start()
 
-    def toggle(self, x):
-        x = x.split()
+    def toggle(self, msg):
+        # changing state of an item in received message
+        msgs = msg.split()
         for room in self.rooms:
             for item in room.items:
-                if len(x) == 2 and item.id == x[1]:
-                    item.toggle_state(x[0])
-        self.win.mainWidget.update_vscroll()
+                if len(msgs) == 2 and item.id == msgs[1]:
+                    item.toggle_state(msgs[0])
 
     def gui(self):
         self.app.exec_()
 
     def transmitter(self, item):
+        # sending message to server
         MESSAGE = ("off " if item.state else "on ") + item.id
         self.UDPSock.sendto(MESSAGE.encode('utf8'), (RemoteController.SERVER_UDP_IP, RemoteController.SERVER_UDP_PORT))
 
     class Receiver(QThread):
+        # creating signal
         update = pyqtSignal(str)
 
         def __init__(self, UDPSock, parent=None):
@@ -57,6 +65,10 @@ class RemoteController:
 
 
 def parse_yaml(file):
+    """
+    :param file: yaml file with configuration of rooms
+    :return: parsed list of rooms with items within
+    """
     data = []
     with open(file, 'r') as stream:
         try:

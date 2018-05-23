@@ -1,5 +1,6 @@
 import locale
 
+
 class Room:
 
     def __init__(self, name, items, parent=None):
@@ -9,4 +10,5 @@ class Room:
         self.widget = None
 
     def __lt__(self, other):
+        # making object possible to sort using user locale
         return locale.strxfrm(self.name) < locale.strxfrm(other.name)
