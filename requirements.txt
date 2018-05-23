@@ -1,1 +1,2 @@
+qdarkstyle
 PyQt5 >= 5.10

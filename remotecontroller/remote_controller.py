@@ -3,7 +3,7 @@ import sys
 sys.path.append("../Malenczuk_Marcin")
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import *
-import remotecontroller.gui.qdarkstyle as qdarksyle
+import qdarkstyle
 from remotecontroller.gui.main_window import MainWindow
 from remotecontroller.room import Room
 from remotecontroller.item import Item
@@ -22,7 +22,7 @@ class RemoteController:
         self.UDPSock.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self.app = QApplication(sys.argv)
         # changing style of the application
-        self.app.setStyleSheet(qdarksyle.load_stylesheet_pyqt5())
+        self.app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
         # creating main window of the application
         self.win = MainWindow(self)
         # creating second thread of continuous receiving messages from server
